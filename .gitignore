@@ -6,9 +6,5 @@ __pycache__/
 *.pyc
 
 # Ignore virtual environment folders
-<<<<<<< HEAD
 venv/
-=======
-mediassist/
->>>>>>> 38f2921a574208bc00d6f3ee7cd6251777323d6c
 .env/        # careful, this ignores a folder named .env
