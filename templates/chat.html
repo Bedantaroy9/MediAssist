@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MEDIASSIST - Your Health Companion</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}"/>
+	</head>
+	
+	<body>
+		<!-- Floating medical particles background -->
+		<div class="medical-particles">
+			<div class="particle particle-1">⚕️</div>
+			<div class="particle particle-2">💊</div>
+			<div class="particle particle-3">🩺</div>
+			<div class="particle particle-4">🏥</div>
+			<div class="particle particle-5">💉</div>
+			<div class="particle particle-6">🧬</div>
+		</div>
+
+		<div class="container-fluid h-100">
+			<div class="row justify-content-center h-100">		
+				<div class="col-md-8 col-xl-6 chat">
+					
+					<!-- Enhanced header with pulse animation -->
+					<div class="chat-header">
+						<div class="heartbeat-container">
+							<div class="heart-pulse">
+								<div class="heart">❤️</div>
+								<div class="pulse-ring"></div>
+								<div class="pulse-ring-2"></div>
+							</div>
+							<div class="ecg-line"></div>
+							<div class="health-status">
+								<span class="status-text">AI Health Assistant Online</span>
+								<div class="connection-indicator"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card glass-morphism">
+						<div class="card-header msg_head">
+							<div class="d-flex bd-highlight align-items-center">
+								<div class="img_cont">
+									<div class="avatar-wrapper">
+										<img src="https://repository-images.githubusercontent.com/197039749/4a3f7700-a77b-11e9-9274-702dc25266c4" class="rounded-circle user_img bot-avatar">
+										<div class="avatar-glow"></div>
+									</div>
+									<span class="online_icon pulse-dot"></span>
+								</div>
+								<div class="user_info">
+									<span class="bot-name">MEDIASSIST</span>
+									<div class="typing-animation" id="typingStatus" style="display: none;">
+										<span></span>
+										<span></span>
+										<span></span>
+									</div>
+									<p class="bot-tagline">Talk About Your Health Concerns</p>
+								</div>
+							</div>
+						</div>
+						
+						<div id="messageFormeight" class="card-body msg_card_body">
+							<!-- Welcome message -->
+							<div class="welcome-message">
+								<div class="welcome-icon">🌟</div>
+								<h4>Welcome to MEDIASSIST</h4>
+								<p>I'm here to help you with your health concerns. Feel free to ask me anything about symptoms, medications, or general health advice!</p>
+								<div class="quick-actions">
+									<button class="quick-btn" onclick="quickMessage('I have a headache')">💊 Headache</button>
+									<button class="quick-btn" onclick="quickMessage('What are flu symptoms?')">🤒 Flu Symptoms</button>
+									<button class="quick-btn" onclick="quickMessage('Healthy diet tips')">🥗 Diet Tips</button>
+								</div>
+							</div>
+						</div>
+						
+						<div class="card-footer">
+							<div class="input-container">
+								<form id="messageArea" class="input-group modern-input">
+									<div class="input-wrapper">
+										<input type="text" id="text" name="msg" placeholder="Describe your symptoms or ask a health question..." autocomplete="off" class="form-control type_msg" required/>
+										<div class="input-decoration"></div>
+									</div>
+									<div class="input-group-append">
+										<button type="submit" id="send" class="send_btn">
+											<i class="fas fa-paper-plane"></i>
+											<div class="send-ripple"></div>
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			// Enhanced chat functionality with animations
+			$(document).ready(function() {
+				let isTyping = false;
+				
+				// Auto-scroll to bottom
+				function scrollToBottom() {
+					const messageContainer = $("#messageFormeight");
+					messageContainer.animate({ scrollTop: messageContainer.prop("scrollHeight") }, 300);
+				}
+				
+				// Show typing indicator
+				function showTyping() {
+					if (!isTyping) {
+						isTyping = true;
+						$("#typingStatus").fadeIn(200);
+						const typingHtml = '<div class="d-flex justify-content-start mb-4 typing-message"><div class="img_cont_msg"><img src="https://cdn-icons-png.flaticon.com/512/387/387569.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer typing-indicator"><div class="typing-dots"><span></span><span></span><span></span></div></div></div>';
+						$("#messageFormeight").append(typingHtml);
+						scrollToBottom();
+					}
+				}
+				
+				// Hide typing indicator
+				function hideTyping() {
+					isTyping = false;
+					$("#typingStatus").fadeOut(200);
+					$(".typing-message").remove();
+				}
+				
+				// Quick message function
+				window.quickMessage = function(message) {
+					$("#text").val(message);
+					$("#messageArea").trigger("submit");
+				};
+				
+				// Enhanced form submission
+				$("#messageArea").on("submit", function(event) {
+					event.preventDefault();
+					
+					const date = new Date();
+					const hour = date.getHours().toString().padStart(2, '0');
+					const minute = date.getMinutes().toString().padStart(2, '0');
+					const str_time = hour + ":" + minute;
+					const rawText = $("#text").val().trim();
+					
+					if (!rawText) return;
+					
+					// Hide welcome message
+					$(".welcome-message").fadeOut(300);
+					
+					// User message with animation
+					const userHtml = `
+						<div class="d-flex justify-content-end mb-4 message-appear">
+							<div class="msg_cotainer_send">
+								${rawText}
+								<span class="msg_time_send">${str_time}</span>
+								<div class="message-status">✓✓</div>
+							</div>
+							<div class="img_cont_msg">
+								<img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg">
+								<div class="user-avatar-glow"></div>
+							</div>
+						</div>`;
+					
+					$("#text").val("");
+					$("#messageFormeight").append(userHtml);
+					scrollToBottom();
+					
+					// Show typing indicator
+					setTimeout(() => showTyping(), 500);
+					
+					// AJAX request with enhanced response
+					$.ajax({
+						data: { msg: rawText },
+						type: "POST",
+						url: "/get",
+					}).done(function(data) {
+						hideTyping();
+						
+						const botHtml = `
+							<div class="d-flex justify-content-start mb-4 message-appear">
+								<div class="img_cont_msg">
+									<img src="https://cdn-icons-png.flaticon.com/512/387/387569.png" class="rounded-circle user_img_msg">
+									<div class="bot-avatar-glow"></div>
+								</div>
+								<div class="msg_cotainer">
+									<div class="message-content">${data}</div>
+									<span class="msg_time">${str_time}</span>
+									<div class="message-actions">
+										<button class="action-icon" title="Copy"><i class="fas fa-copy"></i></button>
+										<button class="action-icon" title="Like"><i class="far fa-heart"></i></button>
+									</div>
+								</div>
+							</div>`;
+						
+						$("#messageFormeight").append(botHtml);
+						scrollToBottom();
+					}).fail(function() {
+						hideTyping();
+						const errorHtml = `
+							<div class="d-flex justify-content-start mb-4 message-appear">
+								<div class="img_cont_msg">
+									<img src="https://cdn-icons-png.flaticon.com/512/387/387569.png" class="rounded-circle user_img_msg">
+								</div>
+								<div class="msg_cotainer error-message">
+									Sorry, I'm having trouble connecting right now. Please try again.
+									<span class="msg_time">${str_time}</span>
+								</div>
+							</div>`;
+						$("#messageFormeight").append(errorHtml);
+						scrollToBottom();
+					});
+				});
+				
+				// Input focus effects
+				$("#text").on("focus", function() {
+					$(".input-container").addClass("focused");
+				}).on("blur", function() {
+					$(".input-container").removeClass("focused");
+				});
+				
+				// Send button ripple effect
+				$("#send").on("click", function(e) {
+					const btn = $(this);
+					btn.addClass("sending");
+					setTimeout(() => btn.removeClass("sending"), 600);
+				});
+			});
+		</script>
+        
+    </body>
+</html>
