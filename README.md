@@ -17,7 +17,7 @@
 > It may take up to **3–5 minutes** to start when you first open it. Please be patient while the server spins up. 🚀
 
 
-[🚀 **Live**](https://mediassist-0c8y.onrender.com) | [📖 **Documentation**](https://github.com/Bedantaroy9/MediAssist/blob/main/README.md) | [🐛 **Report Bug**](https://github.com/Bedantaroy9/MediAssist/issues) | [📖 **Presentation**](https://github.com/Bedantaroy9/MediAssist/tree/main/PPT)
+[🚀 **Live**](https://mediassist-0c8y.onrender.com) | [📖 **Demo**](https://github.com/Bedantaroy9/MediAssist/tree/main/demo) | [🐛 **Report Bug**](https://github.com/Bedantaroy9/MediAssist/issues) | [📖 **Presentation**](https://github.com/Bedantaroy9/MediAssist/tree/main/PPT)
 
 </div>
 
